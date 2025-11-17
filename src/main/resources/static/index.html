@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Fast Fingers Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- IMPORTANT: using style.css -->
+    <link rel="stylesheet" href="/style.css" />
+    <!-- Chart.js for history graph -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="script.js"></script>
+</head>
+<body>
+<div class="app-shell">
+    <!-- Top bar -->
+    <header class="top-bar">
+        <div class="brand">
+            <div class="logo-dot"></div>
+            <div class="brand-text">
+                <h1>Fast Fingers <span>Pro</span></h1>
+                <p>Type. Track. Dominate the leaderboard.</p>
+            </div>
+        </div>
+        <div class="user-panel">
+            <div class="user-info">
+                <span class="user-label">Logged in as</span>
+                <span id="currentUser" class="user-name">Guest</span>
+            </div>
+            <div class="user-actions">
+                <input type="text" id="nameInput" class="input input--small" placeholder="Enter your name" />
+                <button id="loginBtn" class="btn btn--outline">Set Name</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- TOP AD SLOT -->
+    <div class="ad-row ad-row--top">
+        <div class="ad-slot ad-slot--banner">
+            <span class="ad-label">Ad space (728x90) – Top Banner</span>
+        </div>
+    </div>
+
+    <!-- Main layout -->
+    <main class="main-grid">
+        <!-- Left: typing area -->
+        <section class="card typing-card">
+            <div class="typing-header">
+                <div class="chip chip--primary">Live Test</div>
+                <div class="mode-controls">
+                    <label class="mode-label">Duration</label>
+                    <div class="pill-group" id="durationButtons">
+                        <button class="pill pill--active" data-seconds="15">15s</button>
+                        <button class="pill" data-seconds="30">30s</button>
+                        <button class="pill" data-seconds="60">60s</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="typing-body">
+                <div class="timer-wrapper">
+                    <div class="timer-ring">
+                        <span id="timeDisplay">15</span>
+                        <span class="timer-label">seconds</span>
+                    </div>
+                    <button id="startBtn" class="btn btn--primary">Start Test</button>
+                    <button id="resetBtn" class="btn btn--ghost">Reset</button>
+                </div>
+
+                <div class="words-wrapper">
+                    <div id="wordsDisplay" class="words-display"></div>
+                </div>
+
+                <div class="input-wrapper">
+                    <input
+                        id="typingInput"
+                        class="input input--large"
+                        type="text"
+                        placeholder="Start typing here..."
+                        autocomplete="off"
+                        disabled
+                    />
+                </div>
+            </div>
+
+            <div class="typing-footer">
+                <div class="stat-chips">
+                    <div class="mini-stat">
+                        <span class="mini-label">Current WPM</span>
+                        <span id="currentWpm" class="mini-value">0</span>
+                    </div>
+                    <div class="mini-stat">
+                        <span class="mini-label">Accuracy</span>
+                        <span id="currentAccuracy" class="mini-value">100%</span>
+                    </div>
+                    <div class="mini-stat">
+                        <span class="mini-label">Words Typed</span>
+                        <span id="currentWords" class="mini-value">0</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right: summary + history -->
+        <section class="card side-card">
+            <h2 class="card-title">Session Summary</h2>
+            <div class="summary-grid">
+                <div class="summary-main">
+                    <div class="summary-wpm">
+                        <span class="label">Final WPM</span>
+                        <span id="finalWpm" class="summary-value">0</span>
+                    </div>
+                    <div class="summary-accuracy">
+                        <span class="label">Final Accuracy</span>
+                        <span id="finalAccuracy" class="summary-value">100%</span>
+                    </div>
+                </div>
+                <div class="summary-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Duration</span>
+                        <span id="finalDuration" class="meta-value">–</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Total Words</span>
+                        <span id="finalWords" class="meta-value">0</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Test Result</span>
+                        <span id="finalStatus" class="meta-tag">Waiting...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="history-header">
+                <h3>Your Progress</h3>
+                <span class="history-subtitle">WPM over last sessions (local only)</span>
+            </div>
+            <div class="history-chart-wrapper">
+                <canvas id="historyChart"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <!-- MIDDLE AD SLOT -->
+    <div class="ad-row ad-row--middle">
+        <div class="ad-slot ad-slot--banner">
+            <span class="ad-label">Ad space (728x90) – Between content & leaderboard</span>
+        </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <section class="card leaderboard-card">
+        <div class="leaderboard-header">
+            <div>
+                <h2 class="card-title">Global Leaderboard</h2>
+                <p class="card-subtitle">Top scores from all players (stored in MySQL)</p>
+            </div>
+            <div class="leaderboard-controls">
+                <div class="filter-group">
+                    <button class="chip chip--filter chip--active" data-filter="all">All time</button>
+                    <button class="chip chip--filter" data-filter="today">Today</button>
+                    <button class="chip chip--filter" data-filter="week">This week</button>
+                </div>
+                <div class="pagination-info">
+                    <button id="prevPageBtn" class="btn btn--ghost btn--small">Prev</button>
+                    <span id="pageInfo" class="page-info">Page 1</span>
+                    <button id="nextPageBtn" class="btn btn--ghost btn--small">Next</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="leaderboard-table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>WPM</th>
+                    <th>Accuracy</th>
+                    <th>Duration</th>
+                    <th>Words</th>
+                    <th>When</th>
+                </tr>
+                </thead>
+                <tbody id="leaderboardBody">
+                <tr>
+                    <td colspan="7" class="empty-message">
+                        Loading leaderboard...
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <span>Built by Jaan 🔥 | Full-stack Fast Fingers clone</span>
+        <a href="/admin.html" class="admin-link">Admin view</a>
+    </footer>
+</div>
+</body>
+</html>

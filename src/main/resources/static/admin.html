@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Fast Fingers Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="admin.js"></script>
+</head>
+<body>
+<div class="app-shell">
+    <header class="top-bar">
+        <div class="brand">
+            <div class="logo-dot"></div>
+            <div class="brand-text">
+                <h1>Fast Fingers <span>Admin</span></h1>
+                <p>Readonly overview of all scores</p>
+            </div>
+        </div>
+        <a href="/" class="btn btn--outline btn--small">Back to app</a>
+    </header>
+
+    <section class="card leaderboard-card">
+        <div class="leaderboard-header">
+            <div>
+                <h2 class="card-title">All Time Scores</h2>
+                <p class="card-subtitle">Top 50 from /api/scores/top</p>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="leaderboard-table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>WPM</th>
+                    <th>Accuracy</th>
+                    <th>Duration</th>
+                    <th>Words</th>
+                    <th>When</th>
+                </tr>
+                </thead>
+                <tbody id="adminLeaderboardBody">
+                <tr>
+                    <td colspan="7" class="empty-message">Loading…</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <span>Admin view • Fast Fingers Pro</span>
+    </footer>
+</div>
+</body>
+</html>
